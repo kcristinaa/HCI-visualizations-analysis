@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3118d293-b676-46b3-93e2-69bd2a6e0990" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/content/iot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/streamlit_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/data_formatting-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_formatting.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_formatting.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eda.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/eda.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/read_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/read_data.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Home.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/ckaragianni.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/datalab_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/datalab_logo_full.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/empatica.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/eparaschou.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/content/s_yfantidou.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/demo.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/empatica.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/panas.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/stai.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/1_Dataset.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/2_Demographics.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/3_Visualizations.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2VKzb1ZBCIzlU60VQPbE9l1LttC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Christina/Documents/RAIS Consortium/RAISanalysis(Local)/sema user engagement.ipynb",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3118d293-b676-46b3-93e2-69bd2a6e0990" name="Changes" comment="" />
+      <created>1694599629647</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1694599629647</updated>
+      <workItem from="1694599630990" duration="1309000" />
+      <workItem from="1694601994976" duration="110000" />
+      <workItem from="1694602122752" duration="6574000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
