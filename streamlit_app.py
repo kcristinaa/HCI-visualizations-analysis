@@ -2,6 +2,7 @@ from PIL import Image
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
+import numpy as np
 import plotly.express as px
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 
@@ -77,7 +78,8 @@ if choose == "Demographics":
 
     df = pd.read_csv('data\data_total.csv', index_col=0)
 
-    col1_dem, col2_dem = st.columns(2)
+    col1_dem, col2_dem, col3_dem = st.columns(3)
+
     with col1_dem:
         # GENDER header
         st.markdown(""" #### GENDER """)
@@ -145,6 +147,56 @@ if choose == "Demographics":
 
         fig.update_traces(marker=dict(color=age_counts['Color']))
         st.plotly_chart(fig, use_container_width=True)
+
+    with col3_dem:
+        st.markdown(""" #### BMI """)
+
+        df['Height (m)'] = (df['Height (cm)'] / 100)
+        df['BMI'] = df['Weight (kg)'] / df['Height (m)'] ** 2
+        bins = [-np.inf, 18.5, 25, 30, np.inf]
+        labels = ["underweight", "healthy", "overweight", "obese"]
+        df['bmi_cat'] = pd.cut(df['BMI'], bins=bins, labels=labels)
+
+        # create the bar chart
+        bmi = df[['id', 'bmi_cat']]
+        bmi = bmi.loc[bmi.astype(str).drop_duplicates().index]
+        bmi_counts = bmi['bmi_cat'].value_counts().reset_index()
+        bmi_counts.columns = ['bmi_cat', 'Count']
+
+        color_discrete_map = {
+            'underweight': '#ffff99',
+            'healthy': '#ffff99',
+            'overweight': '#ffff99',
+            'obese': '#ffff99'}
+
+        bmi_counts['Color'] = bmi_counts['bmi_cat'].map(color_discrete_map)
+        fig = px.bar(bmi_counts, x='bmi_cat', y='Count', color='bmi_cat', color_discrete_map=color_discrete_map)
+        fig.update_layout(
+            showlegend=False,
+            xaxis_title='BMI',
+            yaxis_title='No. Participants',
+            xaxis=dict(
+                title_font=dict(
+                    size=25, 
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            ),
+            yaxis=dict(
+                title_font=dict(
+                    size=25
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            )
+        )
+
+        fig.update_traces(marker=dict(color=bmi_counts['Color']))
+        st.plotly_chart(fig, use_container_width=True)
+
+
 
     st.markdown('\n')
 
