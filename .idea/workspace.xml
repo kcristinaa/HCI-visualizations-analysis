@@ -5,31 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3118d293-b676-46b3-93e2-69bd2a6e0990" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/content/iot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/streamlit_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/data_formatting-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_formatting.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_formatting.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eda.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/eda.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/read_data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/read_data.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Home.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/ckaragianni.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/datalab_logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/datalab_logo_full.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/empatica.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/eparaschou.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/content/s_yfantidou.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/demo.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/empatica.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/panas.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/stai.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/functions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/1_Dataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/2_Demographics.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/3_Visualizations.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/streamlit_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/streamlit_app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,19 +26,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Christina/Documents/RAIS Consortium/RAISanalysis(Local)/sema user engagement.ipynb",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Christina/Documents/RAIS Consortium/RAISanalysis(Local)/sema user engagement.ipynb&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -71,6 +50,7 @@
       <workItem from="1694599630990" duration="1309000" />
       <workItem from="1694601994976" duration="110000" />
       <workItem from="1694602122752" duration="6574000" />
+      <workItem from="1694850016030" duration="6185000" />
     </task>
     <servers />
   </component>

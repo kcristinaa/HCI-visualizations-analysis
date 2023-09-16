@@ -3,7 +3,6 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
 import plotly.express as px
-import webbrowser
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 
 # format page (browser, logo, title, )
@@ -77,39 +76,168 @@ if choose == "Demographics":
     st.markdown(""" ### Participants' Demographics """)
 
     df = pd.read_csv('data\data_total.csv', index_col=0)
-    df_demographics = df.groupby('id').first()
-    df_demographics = df_demographics[['Gender', 'Age']]
 
     col1_dem, col2_dem = st.columns(2)
     with col1_dem:
         # GENDER header
         st.markdown(""" #### GENDER """)
 
+        gender = df[['id', 'Gender']]
+        gender = gender.loc[gender.astype(str).drop_duplicates().index]
+
         # create the donut chart
-        gender = pd.DataFrame(df_demographics['Gender'].value_counts()).reset_index()
-        gender.loc["Not answered"] = ['Not answered', 71 - gender['Gender'].sum()]
-        gender.reset_index(drop=True, inplace=True)
+        gender = pd.DataFrame(df['Gender'].value_counts()).reset_index()
         gender.rename(columns={'index': 'Gender', 'Gender': 'Value'}, inplace=True)
         fig = px.pie(gender, values='Value', names='Gender', color='Gender',
-                     color_discrete_map={'MALE': '#b0d0e8', 'FEMALE': '#95d0c7', 'Not answered': '#bfbfbf'})
+                     color_discrete_map={'male': '#b0d0e8', 'female': '#95d0c7'})
+        fig.update_layout(
+            legend=dict(
+                font=dict(
+                    size=25  # Adjust the font size as needed
+                )
+            )
+        )
         st.plotly_chart(fig, use_container_width=True)
 
     with col2_dem:
         # AGE header
         st.markdown(""" #### AGE """)
-
         # create the bar chart
-        age = pd.DataFrame(df_demographics['Age'].value_counts()).reset_index()
-        age.loc["Not answered"] = ['Not answered', 71 - age['Age'].sum()]
-        age.reset_index(drop=True, inplace=True)
-        age.rename(columns={'index': 'Age', 'Age': 'Value'}, inplace=True)
-        fig = px.bar(age, x='Age', y='Value', color='Age', text='Value',
-                     color_discrete_map={'<30': '#b0d0e8', '>=30': '#95d0c7', 'Not answered': '#bfbfbf'})
-        fig.update_layout(showlegend=False)
+        age = df[['id', 'Age']]
+        age = age.loc[age.astype(str).drop_duplicates().index]
+        age_counts = age['Age'].value_counts().reset_index()
+        age_counts.columns = ['Age', 'Count']
+
+        #st.bar_chart(age_counts.set_index('Age'))
+        color_discrete_map = {
+            24: '#ffccb3',
+            25: '#ffccb3',
+            26: '#ffccb3',
+            27: '#ffccb3',
+            28: '#ffccb3',
+            29: '#ffccb3',
+            34: '#ffccb3',
+            35: '#ffccb3'
+        }
+        age_counts['Color'] = age_counts['Age'].map(color_discrete_map)
+        fig = px.bar(age_counts, x='Age', y='Count', color='Age', color_discrete_map=color_discrete_map)
+        fig.update_layout(
+            showlegend=False,
+            xaxis_title='Age',
+            yaxis_title='No. Participants',
+            xaxis=dict(
+                title_font=dict(
+                    size=25
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            ),
+            yaxis=dict(
+                title_font=dict(
+                    size=25
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            )
+        )
+
+        fig.update_traces(marker=dict(color=age_counts['Color']))
         st.plotly_chart(fig, use_container_width=True)
 
-
     st.markdown('\n')
+
+if choose == "Interactive visualizations":
+
+    # create horizontal menu
+    selected = option_menu(None, ["Health", "Exercise", 'Sleep', 'Self-reports'], menu_icon="cast",
+                           default_index=0, orientation="horizontal")
+
+    df = pd.read_csv('data\data_total.csv', index_col=0)
+
+    if selected == "Health":
+        st.markdown(""" ## Health """)
+
+        # heart rate plot
+        st.markdown("""
+                   ### Heart Rate Daily Trend 
+                   """)
+
+        df['datetime'] = pd.to_datetime(df['datetime'])
+
+
+
+        # Split the datetime_column into date and time columns
+        df['date'] = df['datetime'].dt.date
+        df['HR'] = pd.to_numeric(df['HR'], errors='coerce')
+
+        heartRate = df[['id', 'date', 'HR']]
+        heartRate_max = heartRate.groupby('date').agg({'HR': 'max'})
+        heartRate_max.reset_index(inplace=True)
+        heartRate_max = heartRate_max.rename(columns={'HR': 'Max', 'date': 'Date'})
+        heartRate_min = heartRate.groupby('date').agg({'HR': 'min'})
+        heartRate_min = heartRate_min.rename(columns={'HR': 'Min'})
+        heartRate_min.reset_index(inplace=True, drop=True)
+        heartRate_mean = round(heartRate.groupby('date').agg({'HR': 'mean'}), 1)
+        heartRate_mean = heartRate_mean.rename(columns={'HR': 'Mean'})
+        heartRate_mean.reset_index(inplace=True, drop=True)
+        heartRate_trend = pd.concat([heartRate_max, heartRate_min, heartRate_mean], axis=1)
+
+        df_male = df[df['Gender'] == 'male']
+        df_female = df[df['Gender'] == 'female']
+
+        all_mean = round(df['HR'].mean(), 2)
+        male_mean = round(df_male['HR'].mean(),2)
+        female_mean = round(df_female['HR'].mean(),2)
+
+        col1, col2, col3 = st.columns(3)
+        col2.metric(label='Avg. value', value=all_mean)
+        col1.metric(label='Avg. value (Male)', value=male_mean, delta=round(male_mean - all_mean, 2))
+        col3.metric(label='Avg. value (Female)', value=female_mean, delta=round(female_mean - all_mean, 2))
+
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+        # info section
+        info_hr = '''
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">                                                                                                    
+            <i class="fa-solid fa-circle-info" style="color: #0e3f6e;"></i> The plot below compares the min, max and mean heart rate versus the experiment dates for all participants.                                                                                                                          
+            '''
+        st.markdown(info_hr, unsafe_allow_html=True)
+        st.markdown('\n')
+
+        fig = px.line(heartRate_trend, x='Date', y=['Max', 'Min', 'Mean'],
+                      labels={'Date': 'Date', 'value': 'Value'}, color_discrete_sequence=['#ffccb3', '#b0d0e8','#95d0c7' ])
+
+        # Customize the layout of the plot
+        fig.update_layout(
+            height = 500,
+            width = 1200,
+            showlegend=True,
+            xaxis_title='Date',
+            yaxis_title='Heart Rate',
+            xaxis=dict(
+                title_font=dict(
+                    size=25
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            ),
+            yaxis=dict(
+                title_font=dict(
+                    size=25
+                ),
+                tickfont=dict(
+                    size=20
+                )
+            )        )
+
+        # Display the Plotly chart in Streamlit
+        st.plotly_chart(fig)
+
+        #st.line_chart(heartRate_trend, x='Date', height=300)
+
+
 
 # add footer section
 footer = """
