@@ -4,6 +4,7 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import altair as alt
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 
 # format page (browser, logo, title, )
@@ -261,35 +262,18 @@ if choose == "Interactive visualizations":
                       labels={'Date': 'Date', 'value': 'Value'}, color_discrete_sequence=['#ffccb3', '#b0d0e8','#95d0c7' ])
 
         # Customize the layout of the plot
-        fig.update_layout(
-            height = 500,
-            width = 1200,
-            showlegend=True,
-            xaxis_title='Date',
-            yaxis_title='Heart Rate',
-            xaxis=dict(
-                title_font=dict(
-                    size=25
-                ),
-                tickfont=dict(
-                    size=20
-                )
-            ),
-            yaxis=dict(
-                title_font=dict(
-                    size=25
-                ),
-                tickfont=dict(
-                    size=20
-                )
-            )        )
-
-        # Display the Plotly chart in Streamlit
+        fig.update_layout(height = 500, width = 1200, showlegend=True, xaxis_title='Date',
+                          yaxis_title='Heart Rate',xaxis=dict(title_font=dict(size=25),tickfont=dict(size=20)),
+                          yaxis=dict(title_font=dict(size=25),tickfont=dict(size=20)))
         st.plotly_chart(fig)
 
-        #st.line_chart(heartRate_trend, x='Date', height=300)
+        st.markdown("""
+                           ### Body Temperature Daily Trend 
+                           """)
 
+    if selected == "Self-reports":
 
+        st.markdown(""" ## Self-reported Data """)
 
 # add footer section
 footer = """
