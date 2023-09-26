@@ -37,8 +37,7 @@ styles={
 
 if choose == "Data Descriptor":
     # data description
-    st.markdown("""
-        ### The StudentLife continuous sensing app assesses the day-to-day and week-by-week impact of workload on 
+    st.markdown("""The StudentLife continuous sensing app assesses the day-to-day and week-by-week impact of workload on 
         stress, sleep, activity, mood, sociability, mental well-being and academic performance of a single class 
         of 48 students across a 10 week term at Dartmouth College using Android phones. Results from the 
         StudentLife study show a number of significant correlations between the automatic objective sensor data 
@@ -116,26 +115,83 @@ if choose == "Demographics":
     st.markdown('\n')
 
 if choose == "Interactive visualizations":
+
     df = pd.read_pickle('data/dataframe')
     df['date'] = pd.to_datetime(df['date'].astype("str"), format='%Y-%m-%d')
-    selected = option_menu(None, ["Behavior Patterns", "Exercise", 'Sleep', 'Self-reports'], menu_icon="cast",
+    selected = option_menu(None, ["Behavior Patterns", "Exercise", 'Self-reports'], menu_icon="cast",
                            default_index=0, orientation="horizontal")
+
     if selected == "Behavior Patterns":
 
         st.markdown(""" ## Behavior Patterns """)
+        st.markdown("""
+                                   ### Sound Surroundings 
+                                   """)
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+        # info section
+        info_hr = '''
+                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">                                                                                                    
+                        <i class="fa-solid fa-circle-info" style="color: #0e3f6e;"></i> The audio classifier runs 24/7 with duty cycling. It makes audio inferences for 1 
+                minutes, then pause for 3 minutes before restart. If the conversation classifier detects that there is 
+                a conversation going on, it will keep running until the conversation is finished. It generates one 
+                audio inference every 2~3 seconds. The plot below visualizes the total hours per day the participants
+                spent in silence, voice and noise environment.                                                                                                                       
+                        '''
+        st.markdown(info_hr, unsafe_allow_html=True)
+        st.markdown('\n')
 
-        col1, col2 = st.columns([1, 2], gap='large')
+        df['silence (in hours)'] = df['silence (in hours)'].apply(pd.to_numeric, errors='coerce')
+        df['voice (in hours)'] = df['voice (in hours)'].apply(pd.to_numeric, errors='coerce')
+        df['noise (in hours)'] = df['noise (in hours)'].apply(pd.to_numeric, errors='coerce')
+
+
+        col1, col2 = st.columns([1, 2])
         col1.markdown('**Select data to preview**')
-        category = col1.radio("Select variable:", ["silence", "voice", "noise"])
+        category = col1.radio("Select variable:", ["silence (in hours)", "voice (in hours)", "noise (in hours)"])
 
-        # Filter the data based on the selected gender
-        if category == "silence":
-            filtered_data = calories
-        else:
-            filtered_data = calories[calories["gender"] == category]
+        # Filter the data based on the selected variable
+        if category == "silence (in hours)":
+            filtered_data = df[["date", "silence (in hours)"]]
+        if category == "voice (in hours)":
+            filtered_data = df[["date", "voice (in hours)"]]
+        if category == "noise (in hours)":
+            filtered_data = df[["date", "noise (in hours)"]]
 
-        mean_calories_per_day = filtered_data.groupby("date")["calories"].mean()
-        col2.line_chart(mean_calories_per_day, y='calories')
+        #st.write(filtered_data)
+
+        mean_per_day = filtered_data.groupby("date")[category].mean()
+        col2.line_chart(mean_per_day)
+
+        st.markdown("""
+                        ### Conversation Daily Trends
+                    """)
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+        # info section
+        info_hr = '''
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">                                                                                                    
+                                <i class="fa-solid fa-circle-info" style="color: #0e3f6e;"></i> The plot below visualizes the time the participants
+                spent participating in conversations and in phone calls.                                                                                                  
+                                '''
+        st.markdown(info_hr, unsafe_allow_html=True)
+        st.markdown('\n')
+
+        df['conversation_duration_in_hours'] = df['conversation_duration_in_hours'].apply(pd.to_numeric, errors='coerce')
+        df['CALLS_duration_in_minutes'] = df['CALLS_duration_in_minutes'].apply(pd.to_numeric, errors='coerce')
+
+        col1, col2 = st.columns([1, 2])
+        col1.markdown('**Select data to preview**')
+        category = col1.radio("Select variable:", ["conversation_duration_in_hours", "CALLS_duration_in_minutes"])
+
+        # Filter the data based on the selected variable
+        if category == "conversation_duration_in_hours":
+            filtered_data = df[["date", "conversation_duration_in_hours"]]
+        if category == "CALLS_duration_in_minutes":
+            filtered_data = df[["date", "CALLS_duration_in_minutes"]]
+
+        # st.write(filtered_data)
+
+        mean_per_day = filtered_data.groupby("date")[category].mean()
+        col2.line_chart(mean_per_day)
 
 
     if selected == "Exercise":
@@ -143,6 +199,36 @@ if choose == "Interactive visualizations":
         st.markdown("""
                            ### Exercise Daily Pattern 
                            """)
+
+        EXAMPLE_PLOT_VAR = {"walking (in hours)": "walking (in hours)",
+                            "running (in hours)": "running (in hours)"}
+
+        plot_var_name = st.selectbox("Select variable to calculate its daily average value:", list(EXAMPLE_PLOT_VAR.keys()), 0)
+        plot_var = EXAMPLE_PLOT_VAR[plot_var_name]
+
+        df['walking (in hours)'] = df['walking (in hours)'].astype(float)
+        df['running (in hours)'] = df['running (in hours)'].astype(float)
+
+        heartRate = df[['id', 'date', plot_var_name]]
+        heartRate_max = heartRate.groupby('date').agg({plot_var_name: 'max'})
+        heartRate_max.reset_index(inplace=True)
+        heartRate_max = heartRate_max.rename(columns={plot_var_name: 'Max', 'date': 'Date'})
+        heartRate_min = heartRate.groupby('date').agg({plot_var_name: 'min'})
+        heartRate_min = heartRate_min.rename(columns={plot_var_name: 'Min'})
+        heartRate_min.reset_index(inplace=True, drop=True)
+        heartRate_mean = round(heartRate.groupby('date').agg({plot_var_name: 'mean'}), 1)
+        heartRate_mean = heartRate_mean.rename(columns={plot_var_name: 'Mean'})
+        heartRate_mean.reset_index(inplace=True, drop=True)
+        heartRate_trend = pd.concat([heartRate_max, heartRate_min, heartRate_mean], axis=1)
+
+        all_mean = round(df[plot_var_name].mean(),2)
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label='Average hours per day',value=str(all_mean))
+
+
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+
 
         df['date'] = pd.to_datetime(df['date'])
         df = df.sort_values(by="date")
@@ -184,7 +270,170 @@ if choose == "Interactive visualizations":
 
         st.markdown(""" ## Self-reported Data """)
 
+        df['date'] = pd.to_datetime(df['date'])
+        df['DayName'] = df['date'].dt.day_name()
 
+        summer_data = df[['id', 'DayName', 'label_panas_PA']].rename(columns={'label_panas_PA': 'panas_PA'})
+        winter_data = df[['id', 'DayName', 'label_panas_NA']].rename(columns={'label_panas_NA': 'panas_NA'})
+
+        sorted_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        summer_data['DayName'] = pd.Categorical(summer_data['DayName'], categories=sorted_days, ordered=True)
+        winter_data['DayName'] = pd.Categorical(winter_data['DayName'], categories=sorted_days, ordered=True)
+
+        # Define a function to calculate mean, min, and max values for each day
+        def calculate_aggregates(data, col):
+            grouped_data = data.groupby('DayName')[col]
+            mean_stress = grouped_data.mean().reset_index()
+            min_stress = grouped_data.min().reset_index()
+            max_stress = grouped_data.max().reset_index()
+            return mean_stress, min_stress, max_stress
+
+
+        # Calculate and merge aggregate values for both seasons
+        df1_mean, df1_min, df1_max = calculate_aggregates(summer_data, 'panas_PA')
+        summer_data = summer_data.merge(df1_mean, on='DayName', suffixes=('', '_mean'))
+        summer_data = summer_data.merge(df1_min, on='DayName', suffixes=('', '_min'))
+        summer_data = summer_data.merge(df1_max, on='DayName', suffixes=('', '_max'))
+        summer_data['PANAS'] = 'Positive Affect'
+
+        df2_mean, df2_min, df2_max = calculate_aggregates(winter_data, 'panas_NA')
+        winter_data = winter_data.merge(df2_mean, on='DayName', suffixes=('', '_mean'))
+        winter_data = winter_data.merge(df2_min, on='DayName', suffixes=('', '_min'))
+        winter_data = winter_data.merge(df2_max, on='DayName', suffixes=('', '_max'))
+        winter_data['PANAS'] = 'Negative Affect'
+
+        # Combine the two datasets and sort by day of the week
+        combined_df = pd.concat([summer_data, winter_data])
+        combined_df['DayName'] = pd.Categorical(combined_df['DayName'], categories=sorted_days, ordered=True)
+
+        sorted_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        combined_df['DayName'] = pd.Categorical(combined_df['DayName'], categories=sorted_days, ordered=True)
+        sorted_df = combined_df.sort_values(by='DayName')
+
+        summer_data['PANAS'] = 'Positive Affect'
+        winter_data['PANAS'] = 'Negative Affect'
+
+        #st.write(summer_data)
+        #st.write(winter_data)
+
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+        # info section
+        info_stai = """
+                ### PANAS Questionnaire
+                The [PANAS](https://psycnet.apa.org/doiLanding?doi=10.1037%2F0022-3514.54.6.1063) questionnaire stands for Positive and Negative Affect Schedule . It's a widely used 
+                self-report measure for assessing the two primary dimensions of mood. The higher the score on 
+                the PANAS questionnaire, the greater the level of positive/negative emotions the participant reported feeling.
+                """
+        st.markdown(info_stai, unsafe_allow_html=True)
+        st.markdown('\n')
+
+        scale = alt.Scale(domain=['Positive Affect', 'Negative Affect'], range=['#ffccb3', '#95d0c7'])
+
+        line_chart1 = alt.Chart(summer_data).mark_line(color='#ffccb3').encode(
+            x=alt.X('DayName:N', sort=sorted_days,
+                    axis=alt.Axis(labelFontSize=15, titleFontSize=20, title='Day of the Week')),
+            y=alt.Y('panas_PA_mean:Q',
+                    axis=alt.Axis(labelFontSize=15, title='PANAS Scores', titleFontSize=20)),
+            # color='Season of the year:N',
+            color=alt.Color('PANAS:N', scale=scale),
+            tooltip=['DayName', 'panas_PA_mean', 'panas_PA_min', 'panas_PA_max']
+        )
+
+        confidence_interval1 = alt.Chart(summer_data).mark_area(opacity=0.3, color='#ffccb3').encode(
+            x=alt.X('DayName', axis=alt.Axis(labelFontSize=15), sort=sorted_days),
+            y='panas_PA_min',
+            y2='panas_PA_max'
+        )
+
+        line_chart2 = alt.Chart(winter_data).mark_line(color='#95d0c7').encode(
+            x=alt.X('DayName', axis=alt.Axis(labelFontSize=15), sort=sorted_days),
+            y='panas_NA_mean',
+            # color='Season of the year:N',
+            color=alt.Color('PANAS:N', scale=scale),
+            tooltip=['DayName', 'panas_NA_mean', 'panas_NA_min', 'panas_NA_max']
+        )
+
+        confidence_interval2 = alt.Chart(winter_data).mark_area(opacity=0.3, color='#95d0c7').encode(
+            x=alt.X('DayName', axis=alt.Axis(labelFontSize=15), sort=sorted_days),
+            y='panas_NA_min',
+            y2='panas_NA_max'
+        )
+
+        # Combine the line charts and shaded confidence intervals into one interactive chart
+        combined_chart = (line_chart1 + line_chart2).properties(
+            width=800, height=400
+        ).interactive().configure_legend(
+            labelFontSize=20
+        )
+        # Show the interactive chart in Streamlit
+        st.altair_chart(combined_chart, use_container_width=True)
+
+        st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
+        # info section
+        info_stai = """
+                        ### Big Five Personality Test
+                        blablabla
+                        """
+        st.markdown(info_stai, unsafe_allow_html=True)
+        st.markdown('\n')
+
+        df.columns = [col.replace('label_', '') for col in df.columns]
+
+        def plot_stacked_bar(df):
+            columns_to_stack = [
+                'extraversion',
+                'agreeableness',
+                'conscientiousness',
+                'neuroticism',
+                'openness',
+                'loneliness'
+            ]
+
+            # Melt the dataframe to have 'id' as identifier and stacked columns as values
+            df_melted = df.melt(id_vars=['id'], value_vars=columns_to_stack)
+
+            chart = alt.Chart(df_melted).mark_bar().encode(
+                x='id:N',
+                y='sum(value):Q',
+                color='variable:N',
+                tooltip=['variable', 'value']
+            ).interactive().properties(width=800, height=400).configure_range(
+                category=alt.RangeScheme(
+                    ['#b0d0e8', '#95d0c7', '#ffccb3', '#ffffb3', '#e6b3cc', '#d0e8d5']
+                )
+            )
+
+            return chart
+
+        st.write(plot_stacked_bar(df))
+
+        def plot_stacked_bar(df):
+            columns_to_stack = [
+                'extraversion',
+                'agreeableness',
+                'conscientiousness',
+                'neuroticism',
+                'openness',
+                'loneliness'
+            ]
+
+            # Melt the dataframe to have 'id' as identifier and stacked columns as values
+            df_melted = df.melt(id_vars=['id'], value_vars=columns_to_stack)
+
+            chart = alt.Chart(df_melted).mark_bar().encode(
+                x=alt.X('variable:N', axis=alt.Axis(title='Personality Type')),
+                y=alt.Y('value:Q', axis=alt.Axis(title='Score')),
+                color='variable:N',
+                order=alt.Order('variable:N', sort='ascending')
+            ).properties(width=800, height=400).configure_range(
+                category=alt.RangeScheme(
+                    ['#b0d0e8', '#95d0c7', '#ffccb3', '#ffffb3', '#e6b3cc', '#d0e8d5']
+                )
+            )
+
+            return chart
+
+        st.write(plot_stacked_bar(df))
 
 
 
