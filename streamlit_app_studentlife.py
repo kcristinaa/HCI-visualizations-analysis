@@ -2,10 +2,8 @@ from PIL import Image
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
-import numpy as np
 import plotly.express as px
 import altair as alt
-import plotly.graph_objects as go
 from streamlit_extras.dataframe_explorer import dataframe_explorer
 
 # format page (browser, logo, title, )
@@ -25,7 +23,7 @@ st.markdown(""" <style> h3{  font-family: 'Cooper Black'; color: #2e8c7f;} </sty
 st.markdown(""" <style> p{  font-size: 20px;} </style> """, unsafe_allow_html=True)
 
 with st.sidebar:
-    choose  = option_menu(None, ["Data Descriptor", "Demographics", "Interactive visualizations", "Personalized data", "Contact"],
+    choose  = option_menu(None, ["Data Descriptor", "Demographics", "Interactive visualizations", "Contact"],
     icons=['clipboard', 'grid-3x2', 'graph-down', 'people-fill', 'mailbox'],
     menu_icon="globe2", default_index=0,
 styles={
@@ -318,13 +316,13 @@ if choose == "Interactive visualizations":
 
         st.markdown(""" <style> .css-5rimss{font-size: 20px;} </style> """, unsafe_allow_html=True)
         # info section
-        info_stai = """
+        info_panas = """
                 ### PANAS Questionnaire
                 The [PANAS](https://psycnet.apa.org/doiLanding?doi=10.1037%2F0022-3514.54.6.1063) questionnaire stands for Positive and Negative Affect Schedule . It's a widely used 
                 self-report measure for assessing the two primary dimensions of mood. The higher the score on 
                 the PANAS questionnaire, the greater the level of positive/negative emotions the participant reported feeling.
                 """
-        st.markdown(info_stai, unsafe_allow_html=True)
+        st.markdown(info_panas, unsafe_allow_html=True)
         st.markdown('\n')
 
         scale = alt.Scale(domain=['Positive Affect', 'Negative Affect'], range=['#ffccb3', '#95d0c7'])
@@ -372,7 +370,9 @@ if choose == "Interactive visualizations":
         # info section
         info_stai = """
                         ### Big Five Personality Test
-                        blablabla
+                        The [Big Five personality test](https://psycnet.apa.org/doiLanding?doi=10.1037%2Ft07550-000), also known as the Five-Factor Model (FFM), OCEAN model, or simply 
+                        the Big Five, is a psychological model that identifies five broad dimensions or factors that are 
+                        used to describe human personality. 
                         """
         st.markdown(info_stai, unsafe_allow_html=True)
         st.markdown('\n')
@@ -394,7 +394,7 @@ if choose == "Interactive visualizations":
 
             chart = alt.Chart(df_melted).mark_bar().encode(
                 x='id:N',
-                y='sum(value):Q',
+                y=alt.Y('value:Q', axis=alt.Axis(title='Score')),
                 color='variable:N',
                 tooltip=['variable', 'value']
             ).interactive().properties(width=800, height=400).configure_range(
@@ -435,7 +435,11 @@ if choose == "Interactive visualizations":
 
         st.write(plot_stacked_bar(df))
 
-
+if choose == "Contact":
+    email1 = "kara.christi91@gmail.com"
+    st.markdown("Christina Karagianni: " f"[{email1}](mailto:{email1})")
+    email2 = "labros.vasileiou23@gmail.com "
+    st.markdown("Labros Vasileiou: " f"[{email2}](mailto:{email2})")
 
 # add footer section
 footer = """
